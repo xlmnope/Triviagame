@@ -70,18 +70,23 @@ function a() {
   input = $(this).text() 
   checkInput();
   if (currentQuestion == myQuestions.length -1) {
-    alert('thanks for playing! ' + 'score: ' + score +'/' + myQuestions.length)
+    timeup();
+    $('#timer').hide();
+
   }
   else {
     currentQuestion++;
-    timeLeft = 30
-    clearTimeout(timerId);
-    timerId = setInterval(countdown, 1000);
+    resetTimer();
     showQuestion();
     showAnswers();
   }
  }
  
+ function resetTimer() {
+  timeLeft = 30
+  clearTimeout(timerId);
+  timerId = setInterval(countdown, 1000);
+}
 
  $('.answerspan').click(a);
   
@@ -103,7 +108,7 @@ function checkInput() {
 }
 
 var timeLeft = 30;
-var elem = document.getElementById('timer');
+var timeelem = document.getElementById('timer');
 var timerId = setInterval(countdown, 1000);
     
     function countdown() {
@@ -111,7 +116,7 @@ var timerId = setInterval(countdown, 1000);
         clearTimeout(timerId);
         timeup();
       } else {
-        elem.innerHTML = timeLeft + ' seconds remaining';
+        timeelem.innerHTML = timeLeft + ' seconds remaining';
         timeLeft--;
       }
     }
@@ -121,15 +126,22 @@ var timerId = setInterval(countdown, 1000);
       console.log('time is up');
       //next question
       if (currentQuestion == myQuestions.length -1) {
-        alert('thanks for playing! ' + 'score: ' + score +'/' + myQuestions.length)
+        endgame();
       }
       else {
         currentQuestion++;
-        timeLeft = 30
-        clearTimeout(timerId);
-        timerId = setInterval(countdown, 1000);
+        resetTimer();
         showQuestion();
         showAnswers();
       }
 
    };
+
+   function endgame(){
+    //alert('thanks for playing! ' + 'score: ' + score +'/' + myQuestions.length)
+    timeelem.innerHTML = '';
+    $('.answers').html('');
+    $('#question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
+
+
+   }
