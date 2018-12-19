@@ -1,0 +1,32 @@
+.answer {
+  padding: 1rem;
+  margin-right: .25rem;
+  margin-left: .25rem;
+  background-color: #7DB3A2;
+  margin-bottom: 10px;
+}
+
+.answers {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.choice {
+  position: absolute;
+  padding: 1em 1em;
+  left: 0;
+  top: 0;
+  background-color: #699982;
+}
+
+body {
+  background-color: #345DAD;
+  color: white;
+}
+h6, .answerspan {
+  padding-left: 2.3rem;
+}
+
+#question {
+font-size: 2rem;
+}
