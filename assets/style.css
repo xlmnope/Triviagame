@@ -4,11 +4,14 @@
   margin-left: .25rem;
   background-color: #7DB3A2;
   margin-bottom: 10px;
+  border-bottom: 5px solid #3C655A;
+
 }
 
 .answers {
   margin-top: 2rem;
   margin-bottom: 2rem;
+  
 }
 
 .choice {
@@ -20,7 +23,7 @@
 }
 
 body {
-  background-color: #345DAD;
+  background-color:	#2C506C;
   color: white;
 }
 h6, .answerspan {
@@ -28,5 +31,6 @@ h6, .answerspan {
 }
 
 #question {
-font-size: 2rem;
+font-size: 2.5rem;
+font-weight: lighter;
 }

@@ -59,7 +59,7 @@ function showAnswers() {
     $('.answers').html('');
     var i;
     for (i = 0; i < myQuestions[currentQuestion].answers.length; i++) { 
-      $('.answers').append("<div class='col-sm-5 answer border'> <span class='choice'>"+ String.fromCharCode(65+i) +"</span> <span class='answerspan'>"+ myQuestions[currentQuestion].answers[i] +"</span></div>");
+      $('.answers').append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+i) +"</span> <span class='answerspan'>"+ myQuestions[currentQuestion].answers[i] +"</span></div>");
     };
     $('.answerspan').click(a);
 }
@@ -74,6 +74,9 @@ function a() {
   }
   else {
     currentQuestion++;
+    timeLeft = 30
+    clearTimeout(timerId);
+    timerId = setInterval(countdown, 1000);
     showQuestion();
     showAnswers();
   }
@@ -99,4 +102,34 @@ function checkInput() {
 
 }
 
+var timeLeft = 30;
+var elem = document.getElementById('timer');
+var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+      if (timeLeft == 0) {
+        clearTimeout(timerId);
+        timeup();
+      } else {
+        elem.innerHTML = timeLeft + ' seconds remaining';
+        timeLeft--;
+      }
+    }
 
+   function timeup() {
+      //log time up 
+      console.log('time is up');
+      //next question
+      if (currentQuestion == myQuestions.length -1) {
+        alert('thanks for playing! ' + 'score: ' + score +'/' + myQuestions.length)
+      }
+      else {
+        currentQuestion++;
+        timeLeft = 30
+        clearTimeout(timerId);
+        timerId = setInterval(countdown, 1000);
+        showQuestion();
+        showAnswers();
+      }
+
+   };
