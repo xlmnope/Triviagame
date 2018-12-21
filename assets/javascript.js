@@ -46,23 +46,27 @@ var score = 0
 var currentQuestion = 0
 
 
-function showQuestion() {
-  console.log('showquestionhandler');
-  $('#question').text(myQuestions[currentQuestion].question);
+function showQA() {
+  $('.question').first().addClass('display');
+  var current = $('.question').first()
+  current.next().removeClass('display');
+  $('.questioncontainer').append(current);
+  
+
+
+  $('.answers').html('');
+  var i;
+  for (i = 0; i < myQuestions[currentQuestion].answers.length; i++) { 
+    $('.answers').append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+i) +"</span> <span class='answerspan'>"+ myQuestions[currentQuestion].answers[i] +"</span></div>");
+  };
+  $('.answerspan').click(a);
+
 };
 
+ 
 
 
-  
-function showAnswers() {
-    console.log('showanswershandler');
-    $('.answers').html('');
-    var i;
-    for (i = 0; i < myQuestions[currentQuestion].answers.length; i++) { 
-      $('.answers').append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+i) +"</span> <span class='answerspan'>"+ myQuestions[currentQuestion].answers[i] +"</span></div>");
-    };
-    $('.answerspan').click(a);
-}
+
   
 function a() { 
   console.log('clickhandleevent');
@@ -77,25 +81,32 @@ function a() {
   else {
     currentQuestion++;
     resetTimer();
-    showQuestion();
-    showAnswers();
+    showQA();
   }
+  
  }
  
  function resetTimer() {
-  timeLeft = 30
+  timeLeft = 15
   clearTimeout(timerId);
   timerId = setInterval(countdown, 1000);
 }
 
  $('.answerspan').click(a);
   
-showQuestion();
-showAnswers();
+showQA();
+//create div for each question ////but only show first
+var i;
+for (i = 0; i < myQuestions.length; i++) { 
+$('.questioncontainer').append("<div class='col-sm-12 text-center question display'>" + myQuestions[i].question +"</div>");
+};
+$('.question').first().removeClass('display');
+
+
+
 
 
 function checkInput() {
-  
       console.log('input: '+ input); 
       //check if input is correct
       console.log('correct answer:' + myQuestions[currentQuestion].correctAnswer); 
@@ -103,11 +114,9 @@ function checkInput() {
         score++;
         console.log('Score: ' + score);
   }
-
-
 }
 
-var timeLeft = 30;
+var timeLeft = 15;
 var timeelem = document.getElementById('timer');
 var timerId = setInterval(countdown, 1000);
     
@@ -131,17 +140,15 @@ var timerId = setInterval(countdown, 1000);
       else {
         currentQuestion++;
         resetTimer();
-        showQuestion();
-        showAnswers();
+        showQA();
       }
 
    };
 
    function endgame(){
-    //alert('thanks for playing! ' + 'score: ' + score +'/' + myQuestions.length)
     timeelem.innerHTML = '';
     $('.answers').html('');
-    $('#question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
+    $('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
 
 
    }
