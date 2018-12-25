@@ -5,13 +5,16 @@
   background-color: #7DB3A2;
   margin-bottom: 10px;
   border-bottom: 5px solid #3C655A;
-
+  cursor: pointer;
 }
 
 .answers {
-  margin-top: 2rem;
+  top: 10rem;
   margin-bottom: 2rem;
-  
+  position: absolute;
+  margin-left: 150%;
+  transition: margin-left 1s;
+  width: 100%;
 }
 
 .choice {
@@ -29,13 +32,34 @@ body {
 h6, .answerspan {
   padding-left: 2.3rem;
 }
+#containerslide {
+  position: absolute;
+  width: 100%;
 
+}
+.questioncontainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .question {
-font-size: 2.5rem;
-font-weight: lighter;
+  font-size: 2.5rem;
+  font-weight: lighter;
+  position: absolute;
+  margin-left: 150%;
+  transition: margin-left 1s;
 }
 
-.display {
-  display: none;
+.show {
+  margin-left: 0%;
+  padding-left: 10%;
+  padding-right: 10%;
+
+}
+.timer {
+  width: 100%;
 }
 
+.answered {
+  margin-left: -150%;
+}

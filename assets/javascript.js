@@ -44,111 +44,97 @@ const myQuestions = [
 var input
 var score = 0
 var currentQuestion = 0
+var timeLeft = 15;
+var timeelem = document.getElementById('timer');
+var timerId = setInterval(countdown, 1000);
+start();
 
+function start() {
+  //create div for each question
+  var i;
+  for (i = 0; i < myQuestions.length; i++) { 
+    $('.questioncontainer').append("<div class='col-sm-12 text-center question'>" + myQuestions[i].question +"</div>");
+    $('.answercontainer').append("<div class='answers row justify-content-center'></div>")
+    
+      //instead of wiping it out pre-load them and only show 
+    var j;
+    for (j = 0; j < myQuestions[i].answers.length; j++) { 
+      $('.answers').eq(i).append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+j) +"</span> <span class='answerspan'>"+ myQuestions[i].answers[j] +"</span></div>");
+    };
+  };
+  $('.answer').click(answerhandler);
+
+  showQA();
+}
 
 function showQA() {
-  $('.question').first().addClass('display');
-  var current = $('.question').first()
-  current.next().removeClass('display');
-  $('.questioncontainer').append(current);
-  
+  $('.question').eq(currentQuestion).addClass('show');
+  $('.answers').eq(currentQuestion).addClass('show');
+  if(currentQuestion > 0){
+    $('.question').eq(currentQuestion-1).addClass('answered');
+    $('.answers').eq(currentQuestion-1).addClass('answered');
+  }
+}
 
-
-  $('.answers').html('');
-  var i;
-  for (i = 0; i < myQuestions[currentQuestion].answers.length; i++) { 
-    $('.answers').append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+i) +"</span> <span class='answerspan'>"+ myQuestions[currentQuestion].answers[i] +"</span></div>");
-  };
-  $('.answerspan').click(a);
-
-};
-
- 
-
-
-
-  
-function a() { 
+function answerhandler() { 
   console.log('clickhandleevent');
   //save input
-  input = $(this).text() 
+  input = $('.answerspan', this).text() 
   checkInput();
   if (currentQuestion == myQuestions.length -1) {
     timeup();
     $('#timer').hide();
-
+    
   }
   else {
     currentQuestion++;
     resetTimer();
     showQA();
   }
-  
- }
- 
- function resetTimer() {
+}
+
+function resetTimer() {
   timeLeft = 15
   clearTimeout(timerId);
   timerId = setInterval(countdown, 1000);
-}
-
- $('.answerspan').click(a);
-  
-showQA();
-//create div for each question ////but only show first
-var i;
-for (i = 0; i < myQuestions.length; i++) { 
-$('.questioncontainer').append("<div class='col-sm-12 text-center question display'>" + myQuestions[i].question +"</div>");
-};
-$('.question').first().removeClass('display');
-
-
-
-
+}  
 
 function checkInput() {
-      console.log('input: '+ input); 
-      //check if input is correct
-      console.log('correct answer:' + myQuestions[currentQuestion].correctAnswer); 
-      if (input == myQuestions[currentQuestion].correctAnswer) {
-        score++;
-        console.log('Score: ' + score);
+  console.log('input: '+ input); 
+  //check if input is correct
+  console.log('correct answer:' + myQuestions[currentQuestion].correctAnswer); 
+  if (input == myQuestions[currentQuestion].correctAnswer) {
+    score++;
+    console.log('Score: ' + score);
   }
 }
 
-var timeLeft = 15;
-var timeelem = document.getElementById('timer');
-var timerId = setInterval(countdown, 1000);
-    
-    function countdown() {
-      if (timeLeft == 0) {
-        clearTimeout(timerId);
-        timeup();
-      } else {
-        timeelem.innerHTML = timeLeft + ' seconds remaining';
-        timeLeft--;
-      }
-    }
+function countdown() {
+  if (timeLeft == 0) {
+    clearTimeout(timerId);
+    timeup();
+  } else {
+    timeelem.innerHTML = timeLeft + ' seconds remaining';
+    timeLeft--;
+  }
+}
 
-   function timeup() {
-      //log time up 
-      console.log('time is up');
-      //next question
-      if (currentQuestion == myQuestions.length -1) {
-        endgame();
-      }
-      else {
-        currentQuestion++;
-        resetTimer();
-        showQA();
-      }
+function timeup() {
+  //log time up 
+  console.log('time is up');
+  //next question
+  if (currentQuestion == myQuestions.length -1) {
+    endgame();
+  }
+  else {
+    currentQuestion++;
+    resetTimer();
+    showQA();
+  } 
+}
 
-   };
-
-   function endgame(){
-    timeelem.innerHTML = '';
-    $('.answers').html('');
-    $('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
-
-
-   }
+function endgame(){
+  timeelem.innerHTML = '';
+  $('.answers').html('');
+  $('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
+}
