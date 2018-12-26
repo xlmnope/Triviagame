@@ -41,7 +41,6 @@ const myQuestions = [
   }
 ];
 
-var input
 var score = 0
 var currentQuestion = 0
 var timeLeft = 15;
@@ -79,17 +78,17 @@ function showQA() {
 function answerhandler() { 
   console.log('clickhandleevent');
   //save input
-  input = $('.answerspan', this).text() 
-  checkInput();
+  var input = $('.answerspan', this).text() 
+  var element = $(this);
+  checkInput(input, element);
   if (currentQuestion == myQuestions.length -1) {
     timeup();
     $('#timer').hide();
-    
   }
   else {
     currentQuestion++;
     resetTimer();
-    showQA();
+    setTimeout(showQA, 1000);
   }
 }
 
@@ -99,13 +98,18 @@ function resetTimer() {
   timerId = setInterval(countdown, 1000);
 }  
 
-function checkInput() {
+function checkInput(input, element) {  
   console.log('input: '+ input); 
   //check if input is correct
   console.log('correct answer:' + myQuestions[currentQuestion].correctAnswer); 
+
   if (input == myQuestions[currentQuestion].correctAnswer) {
+    element.addClass('answerCorrectSelected');
     score++;
     console.log('Score: ' + score);
+  }
+  else {
+    element.addClass('answerIncorrectSelected');
   }
 }
 
@@ -124,7 +128,7 @@ function timeup() {
   console.log('time is up');
   //next question
   if (currentQuestion == myQuestions.length -1) {
-    endgame();
+    setTimeout(endgame, 1000);
   }
   else {
     currentQuestion++;
