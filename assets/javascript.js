@@ -38,7 +38,13 @@ const myQuestions = [
       "Next Month"
     ],
     correctAnswer: "Someday"
-  }
+  },
+  {
+    question: "",
+    answers: [
+      
+    ],
+  },
 ];
 
 var score = 0
@@ -48,7 +54,10 @@ var timeelem = document.getElementById('timer');
 var timerId = setInterval(countdown, 1000);
 start();
 
-function start() {
+function start() {  
+  console.log(myQuestions);
+  console.log(myQuestions.length);
+
   //create div for each question
   var i;
   for (i = 0; i < myQuestions.length; i++) { 
@@ -61,6 +70,7 @@ function start() {
       $('.answers').eq(i).append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+j) +"</span> <span class='answerspan'>"+ myQuestions[i].answers[j] +"</span></div>");
     };
   };
+
   $('.answer').click(answerhandler);
 
   showQA();
@@ -74,14 +84,20 @@ function showQA() {
     $('.answers').eq(currentQuestion-1).addClass('answered');
   }
 }
-
 function answerhandler() { 
   console.log('clickhandleevent');
   //save input
   var input = $('.answerspan', this).text() 
   var element = $(this);
   checkInput(input, element);
-  if (currentQuestion == myQuestions.length -1) {
+  //if the current question is the last question, change the text of the next 'question' showing to endmessage
+  //subtracted by two because the last myquestions is empty, it saves a spot for the end message
+  if (currentQuestion == myQuestions.length -2 ) {
+    console.log($('.question:last-child'));
+    //bug...this is not working, coming back as NaN
+    $(".question:last-child").text("thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1));
+    console.log($('.question:last-child'));
+
     timeup();
     $('#timer').hide();
   }
@@ -97,17 +113,20 @@ function resetTimer() {
   clearTimeout(timerId);
   timerId = setInterval(countdown, 1000);
 }  
-
 function checkInput(input, element) {  
   console.log('input: '+ input); 
   //check if input is correct
   console.log('correct answer:' + myQuestions[currentQuestion].correctAnswer); 
-
   if (input == myQuestions[currentQuestion].correctAnswer) {
     element.addClass('answerCorrectSelected');
     score++;
     console.log('Score: ' + score);
-  }
+    //change text of last div to endmessage
+        
+      }
+   
+
+  
   else {
     element.addClass('answerIncorrectSelected');
   }
@@ -139,6 +158,7 @@ function timeup() {
 
 function endgame(){
   timeelem.innerHTML = '';
-  $('.answers').html('');
-  $('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length);
+
+  //$('.answers').html('');
+  //$('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length - 1);
 }
