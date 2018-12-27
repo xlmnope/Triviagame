@@ -64,15 +64,15 @@ function start() {
     $('.questioncontainer').append("<div class='col-sm-12 text-center question'>" + myQuestions[i].question +"</div>");
     $('.answercontainer').append("<div class='answers row justify-content-center'></div>")
     
-      //instead of wiping it out pre-load them and only show 
+    //create div for answers of each question
     var j;
     for (j = 0; j < myQuestions[i].answers.length; j++) { 
       $('.answers').eq(i).append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+j) +"</span> <span class='answerspan'>"+ myQuestions[i].answers[j] +"</span></div>");
     };
   };
-
+  //when .answer is clicked do a function
   $('.answer').click(answerhandler);
-
+  //show question and answers
   showQA();
 }
 
@@ -80,26 +80,27 @@ function showQA() {
   $('.question').eq(currentQuestion).addClass('show');
   $('.answers').eq(currentQuestion).addClass('show');
   if(currentQuestion > 0){
+    //apply answered class to previous question.. this class allows for animation 
     $('.question').eq(currentQuestion-1).addClass('answered');
     $('.answers').eq(currentQuestion-1).addClass('answered');
   }
 }
 function answerhandler() { 
   console.log('clickhandleevent');
-  //save input
+  //save text of what user clicked
+  var endMessage = "thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1)
   var input = $('.answerspan', this).text() 
   var element = $(this);
+  //pass input and element into checkInput function
   checkInput(input, element);
   //if the current question is the last question, change the text of the next 'question' showing to endmessage
   //subtracted by two because the last myquestions is empty, it saves a spot for the end message
   if (currentQuestion == myQuestions.length -2 ) {
-    console.log($('.question:last-child'));
-    //bug...this is not working, coming back as NaN
-    $(".question:last-child").text("thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1));
-    console.log($('.question:last-child'));
-
-    timeup();
-    $('#timer').hide();
+    $(".question:last-child").text(endMessage);
+    setTimeout(advanceQuestion, 1000); 
+    setTimeout(function (){
+      $('#timer').hide();
+    }, 1000);
   }
   else {
     currentQuestion++;
@@ -109,7 +110,7 @@ function answerhandler() {
 }
 
 function resetTimer() {
-  timeLeft = 15
+  timeLeft = 5
   clearTimeout(timerId);
   timerId = setInterval(countdown, 1000);
 }  
@@ -120,10 +121,8 @@ function checkInput(input, element) {
   if (input == myQuestions[currentQuestion].correctAnswer) {
     element.addClass('answerCorrectSelected');
     score++;
-    console.log('Score: ' + score);
-    //change text of last div to endmessage
-        
-      }
+    console.log('Score: ' + score);  
+    }
    
 
   
@@ -133,32 +132,37 @@ function checkInput(input, element) {
 }
 
 function countdown() {
+  var endMessage = "thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1)
   if (timeLeft == 0) {
+    console.log('timeleft = 0')
     clearTimeout(timerId);
-    timeup();
-  } else {
+    //set text of last div to endMessage
+     if (currentQuestion == myQuestions.length -2 ) {
+      $(".question:last-child").text(endMessage);
+      //stop timer
+      clearTimeout(timerId);
+      //hidetimer
+      setTimeout(function (){
+        $('#timer').hide();
+      }, 500);
+     }
+    advanceQuestion();
+    }
+    //stop timers after questions are answered
+    if (currentQuestion >= myQuestions.length -1) {
+      clearTimeout(timerId);
+    }
+   
+  else {
     timeelem.innerHTML = timeLeft + ' seconds remaining';
     timeLeft--;
   }
 }
 
-function timeup() {
-  //log time up 
-  console.log('time is up');
-  //next question
-  if (currentQuestion == myQuestions.length -1) {
-    setTimeout(endgame, 1000);
-  }
-  else {
-    currentQuestion++;
-    resetTimer();
-    showQA();
-  } 
-}
 
-function endgame(){
-  timeelem.innerHTML = '';
-
-  //$('.answers').html('');
-  //$('.question').html("thanks for playing! " + 'Score: ' + score +'/' + myQuestions.length - 1);
+function advanceQuestion() {
+  currentQuestion++;
+  resetTimer();
+  showQA();
 }
+ 
