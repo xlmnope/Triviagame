@@ -70,8 +70,8 @@ function start() {
       $('.answers').eq(i).append("<div class='col-sm-5 answer'> <span class='choice'>"+ String.fromCharCode(65+j) +"</span> <span class='answerspan'>"+ myQuestions[i].answers[j] +"</span></div>");
     };
   };
-  //when .answer is clicked do a function
-  $('.answer').click(answerhandler);
+  
+  //$('.answer').click(answerhandler);
   //show question and answers
   showQA();
 }
@@ -79,18 +79,24 @@ function start() {
 function showQA() {
   $('.question').eq(currentQuestion).addClass('show');
   $('.answers').eq(currentQuestion).addClass('show');
+  //when .answer is clicked do a function. binds click event everytime this function is called. click event is removed after .answer is selected on currentquestion
+  $('.answer').click(answerhandler);
   if(currentQuestion > 0){
     //apply answered class to previous question.. this class allows for animation 
     $('.question').eq(currentQuestion-1).addClass('answered');
     $('.answers').eq(currentQuestion-1).addClass('answered');
+
   }
 }
 function answerhandler() { 
   console.log('clickhandleevent');
+  //turn off click handler on current question after one is already clicked
   //save text of what user clicked
   var endMessage = "thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1)
   var input = $('.answerspan', this).text() 
   var element = $(this);
+  $('.answer').off('click');
+
   //pass input and element into checkInput function
   checkInput(input, element);
   //if the current question is the last question, change the text of the next 'question' showing to endmessage
