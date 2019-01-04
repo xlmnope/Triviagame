@@ -96,6 +96,7 @@ function answerhandler() {
   //if the current question is the last question, change the text of the next 'question' showing to endmessage
   //subtracted by two because the last myquestions is empty, it saves a spot for the end message
   if (currentQuestion == myQuestions.length -2 ) {
+    endMessage = "thanks for playing! " + 'Score: ' + score +'/' + (myQuestions.length - 1)
     $(".question:last-child").text(endMessage);
     setTimeout(advanceQuestion, 1000); 
     setTimeout(function (){
@@ -110,7 +111,7 @@ function answerhandler() {
 }
 
 function resetTimer() {
-  timeLeft = 5
+  timeLeft = 15
   clearTimeout(timerId);
   timerId = setInterval(countdown, 1000);
 }  
@@ -142,9 +143,7 @@ function countdown() {
       //stop timer
       clearTimeout(timerId);
       //hidetimer
-      setTimeout(function (){
         $('#timer').hide();
-      }, 500);
      }
     advanceQuestion();
     }
